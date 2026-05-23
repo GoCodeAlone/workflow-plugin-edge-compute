@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schema://providers/workflow-plugin-edge-compute/edge-lambda/v1",
+  "title": "Edge Lambda WASM provider config",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "component_ref": {
+      "type": "string",
+      "pattern": "^(artifact|content|provider)://"
+    },
+    "component_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-fA-F]{64}$"
+    }
+  },
+  "required": ["component_ref", "component_digest"]
+}

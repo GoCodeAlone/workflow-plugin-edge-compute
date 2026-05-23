@@ -1,0 +1,59 @@
+{
+  "protocol_version": "v0",
+  "id": "edge-cdn-filter-wasm-v1",
+  "display_name": "Edge CDN Filter WASM",
+  "plugin_id": "workflow-plugin-edge-compute",
+  "provider_id": "edge-cdn-filter",
+  "contract_id": "edge-cdn-filter.wasm.v1",
+  "version": "v1.0.0",
+  "config_schema_ref": "schema://providers/workflow-plugin-edge-compute/edge-cdn-filter/v1",
+  "config_schema_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "operating_modes": ["batch"],
+  "workload_kinds": ["provider", "wasm-component"],
+  "executor_providers": ["wasm-component"],
+  "execution_security_tiers": ["wasm-capability"],
+  "proof_tiers": ["artifact-hash"],
+  "network_modes": ["relay", "offline"],
+  "operations": [
+    {
+      "id": "filter_request",
+      "input_schema_ref": "schema://providers/workflow-plugin-edge-compute/edge-cdn-filter/v1/operations/filter_request/input/v1",
+      "input_schema_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "output_schema_ref": "schema://providers/workflow-plugin-edge-compute/edge-cdn-filter/v1/operations/filter_request/output/v1",
+      "output_schema_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "artifacts": ["cdn_decision"],
+      "artifact_specs": [
+        {
+          "name": "cdn_decision",
+          "required": true,
+          "content_type": "application/json",
+          "max_bytes": 1048576,
+          "retention_seconds": 3600,
+          "forwardable": true
+        }
+      ]
+    }
+  ],
+  "runtime_contract": {
+    "profiles": [
+      {
+        "id": "wasm-component-artifact-hash-runtime",
+        "runtime_profile": "wasm-component-v1",
+        "executor_provider": "wasm-component",
+        "execution_security_tier": "wasm-capability",
+        "proof_tier": "artifact-hash",
+        "wasm": {
+          "abi": "wasm-export-i32-v1",
+          "component_ref": "provider://workflow-plugin-edge-compute/edge-cdn-filter/filter.wasm",
+          "component_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "features": ["edge-request-v1"],
+          "max_memory_bytes": 134217728,
+          "max_runtime_seconds": 10,
+          "filesystem": "forbidden",
+          "network": "forbidden",
+          "native_host_updates": "forbidden"
+        }
+      }
+    ]
+  }
+}
