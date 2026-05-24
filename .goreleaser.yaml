@@ -1,0 +1,30 @@
+version: 2
+project_name: workflow-plugin-edge-compute
+before:
+  hooks:
+    - go mod tidy
+    - "sed -i.bak 's/\"version\": \".*\"/\"version\": \"{{ .Version }}\"/' plugin.json && rm -f plugin.json.bak"
+builds:
+  - id: workflow-plugin-edge-compute
+    main: ./cmd/workflow-plugin-edge-compute
+    binary: workflow-plugin-edge-compute
+    env:
+      - CGO_ENABLED=0
+      - GOPRIVATE=github.com/GoCodeAlone/*
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X github.com/GoCodeAlone/workflow-plugin-edge-compute/internal/plugin.Version={{.Version}}
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - plugin.json
+checksum:
+  name_template: "checksums.txt"
+release:
+  draft: false

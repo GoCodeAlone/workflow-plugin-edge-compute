@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	sdk.Serve(plugin.NewPlugin())
+	sdk.Serve(plugin.NewPlugin(), sdk.WithBuildVersion(sdk.ResolveBuildVersion(plugin.Version)))
 }
